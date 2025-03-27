@@ -1,55 +1,135 @@
 # AiDemy Bootstrap
 
-AiDemy is a demo showcasing multi-tool calling and multi-agent workflows within Google Cloud and using Gemini models. It provides a comprehensive example of building complex AI applications by orchestrating multiple agents and tools to achieve educational goals.
+AiDemy is a comprehensive educational platform that demonstrates the power of multi-agent systems and AI in education. Built on Google Cloud and leveraging Gemini models, it showcases how complex AI applications can enhance the learning experience.
 
-## Project Structure
+## 🌟 Features
+
+- **Intelligent Course Planning**: AI-powered curriculum generation and management
+- **Interactive Learning**: Dynamic quiz system with adaptive difficulty
+- **Smart Assessment**: Automated answer evaluation with detailed feedback
+- **Resource Management**: Integrated book recommendations and course materials
+- **Multi-Agent Architecture**: Coordinated AI agents working together
+
+## 🏗️ Project Structure
 
 ### Portal (`/portal`)
 The main interface for students and educators:
 - Course content delivery and management
-- Interactive quiz system
-- Answer evaluation
+- Interactive quiz system with adaptive difficulty
+- AI-powered answer evaluation and feedback
 - Teaching plan generation and management
-- Built with Flask, includes templates for web interface
+- Built with Flask, includes modern web interface
 
 ### Planner (`/planner`)
 Intelligent curriculum planning service:
-- Curriculum generation and management
-- Book recommendation system
-- Search functionality for educational content
-- AI-powered learning path creation
+- AI-driven curriculum generation
+- Personalized learning path creation
+- Smart content organization
+- Integration with educational standards
 
 ### Courses (`/courses`)
 Course content management system:
-- Course material storage
+- Structured course material storage
 - Curriculum organization
 - Learning resource management
+- Content versioning
 
 ### Assignment (`/assignment`)
-Assignment handling system:
-- Assignment creation and distribution
+Advanced assignment handling system:
+- Automated assignment creation
 - Student submission management
-- Grading and feedback system
+- AI-powered grading system
+- Detailed feedback generation
 
 ### Book Provider (`/bookprovider`)
-Book recommendation and management service:
-- Book catalog management
-- Reading recommendations
-- Integration with curriculum planning
+Smart book recommendation service:
+- AI-driven book recommendations
+- Reading level assessment
+- Curriculum-aligned suggestions
+- Integration with learning paths
 
 ### Setup (`/setup`)
-Contains initialization and configuration scripts for the platform.
+Configuration and deployment scripts:
+- Environment setup
+- Service initialization
+- Deployment automation
+- Configuration management
 
-## Dependencies
+## 🛠️ Technology Stack
 
-Each service manages its own dependencies through individual `requirements.txt` files. Core services are built with:
-- Python Flask for web services
-- Docker for containerization
-- Langchain for agent orchestration
-- Google Vertex AI (including Gemini models)
-- Deepseek
-- Ollama integrations for LLMs
+- **Backend**: Python Flask
+- **AI/ML**: 
+  - Google Vertex AI (Gemini models)
+  - Langchain for agent orchestration
+  - Deepseek
+  - Ollama integrations
+- **Infrastructure**:
+  - Google Cloud Platform
+  - Docker for containerization
+  - Cloud Storage for content
+- **Frontend**:
+  - Modern web templates
+  - Responsive design
+  - Interactive UI components
 
-## Architecture
+## 🚀 Getting Started
 
-The platform follows a multi-agent architecture where each component (portal, planner, courses, etc.) operates independently but communicates with others to fullfill the use cases
+1. **Prerequisites**:
+   - Google Cloud Platform account
+   - Docker installed
+   - Python 3.8+
+
+2. **Setup**:
+   ```bash
+   # Clone the repository
+   git clone [repository-url]
+   
+   # Navigate to setup directory
+   cd setup
+   
+   # Run setup script
+   ./setup.sh
+   ```
+
+3. **Configuration**:
+   - Set up Google Cloud credentials
+   - Configure environment variables
+   - Initialize services
+
+4. **Running the Application**:
+   ```bash
+   # Start all services
+   docker-compose up
+   ```
+
+## 📚 Documentation
+
+- [API Documentation](docs/api.md)
+- [Architecture Overview](docs/architecture.md)
+- [Development Guide](docs/development.md)
+- [Deployment Guide](docs/deployment.md)
+
+## 🤝 Contributing
+
+While this is a Google-maintained project, we welcome suggestions and improvements. Please:
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
+
+## 📝 License
+
+This project is maintained by Google. All rights reserved.
+
+## 🙏 Acknowledgments
+
+- Google Cloud Platform team
+- Langchain community
+- All contributors and maintainers
+
+## 🔄 Updates and Maintenance
+
+This repository is actively maintained and updated with:
+- Latest AI model integrations
+- Security patches
+- Performance improvements
+- New features and capabilities
