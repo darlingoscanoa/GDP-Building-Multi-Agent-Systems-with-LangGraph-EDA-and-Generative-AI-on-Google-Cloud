@@ -24,3 +24,59 @@ from google.cloud import pubsub_v1
 
 
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT")  # Get project ID from env
+
+tools = [get_curriculum, search_latest_resource, recommend_book]
+
+def determine_tool(state: MessagesState):
+    llm = ChatVertexAI(model_name="gemini-2.0-flash-001", location=get_next_region())
+    sys_msg = SystemMessage(
+                    content=(
+                        f"""You are a helpful teaching assistant that helps gather all needed information. 
+                            Your ultimate goal is to create a detailed 3-week teaching plan. 
+                            You have access to tools that help you gather information.  
+                            Based on the user request, decide which tool(s) are needed. 
+
+                        """
+                    )
+                )
+
+    llm_with_tools = llm.bind_tools(tools)
+    return {"messages": llm_with_tools.invoke([sys_msg] + state["messages"])} 
+
+###
+
+def prep_class(prep_needs):
+   
+    builder = StateGraph(MessagesState)
+    builder.add_node("determine_tool", determine_tool)
+    builder.add_node("tools", ToolNode(tools))
+    
+    builder.add_edge(START, "determine_tool")
+    builder.add_conditional_edges("determine_tool",tools_condition)
+    builder.add_edge("tools", "determine_tool")
+
+    
+    memory = MemorySaver()
+    graph = builder.compile(checkpointer=memory)
+
+    config = {"configurable": {"thread_id": "1"}}
+    messages = graph.invoke({"messages": prep_needs},config)
+    print(messages)
+    for m in messages['messages']:
+        m.pretty_print()
+    teaching_plan_result = messages["messages"][-1].content  
+
+
+    return teaching_plan_result
+
+'''
+### First test
+if __name__ == "__main__":
+  prep_class("I'm doing a course for  year 5 on subject Mathematics in Geometry, , get school curriculum, and come up with few books recommendation plus  search latest resources on the internet base on the curriculum outcome. And come up with a 3 week teaching plan")
+
+### Second test
+
+if __name__ == "__main__":
+  prep_class("I'm doing a course for year 5 on subject Mathematics in Geometry, search latest resources on the internet base on the subject. And come up with a 3 week teaching plan")
+
+'''
