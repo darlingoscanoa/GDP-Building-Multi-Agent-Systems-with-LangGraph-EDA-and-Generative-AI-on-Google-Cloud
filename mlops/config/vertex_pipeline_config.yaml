@@ -1,0 +1,121 @@
+# Vertex AI Pipeline Configuration
+# This configuration manages the deployment and monitoring of LLM-based services
+
+version: "1.0"
+
+# Pipeline Settings
+pipeline:
+  name: "aidemy-llm-pipeline"
+  description: "Pipeline for managing LLM-based services in AiDemy"
+  schedule: "0 */6 * * *"  # Run every 6 hours
+
+# Model Settings
+models:
+  - name: "gemini-1.0-pro"
+    version: "latest"
+    endpoint: "aidemy-gemini-endpoint"
+    monitoring:
+      enabled: true
+      metrics:
+        - name: "latency"
+          threshold: 1000  # ms
+        - name: "error_rate"
+          threshold: 0.01  # 1%
+        - name: "token_usage"
+          threshold: 1000  # tokens per request
+
+  - name: "gemini-2-flash"
+    version: "latest"
+    endpoint: "aidemy-gemini-flash-endpoint"
+    monitoring:
+      enabled: true
+      metrics:
+        - name: "latency"
+          threshold: 500  # ms
+        - name: "error_rate"
+          threshold: 0.01
+        - name: "token_usage"
+          threshold: 500
+
+# Deployment Settings
+deployment:
+  strategy: "rolling"
+  min_instances: 1
+  max_instances: 10
+  scaling_threshold: 0.7  # CPU utilization
+  health_check:
+    path: "/health"
+    interval: 30
+    timeout: 10
+    healthy_threshold: 2
+    unhealthy_threshold: 3
+
+# Monitoring Settings
+monitoring:
+  project_id: "${GOOGLE_CLOUD_PROJECT}"
+  region: "us-central1"
+  metrics:
+    - name: "request_count"
+      type: "counter"
+    - name: "average_latency"
+      type: "gauge"
+    - name: "error_count"
+      type: "counter"
+    - name: "token_usage"
+      type: "gauge"
+  alerts:
+    - name: "high_latency"
+      condition: "average_latency > 1000"
+      severity: "warning"
+    - name: "high_error_rate"
+      condition: "error_count / request_count > 0.01"
+      severity: "critical"
+
+# Logging Settings
+logging:
+  level: "INFO"
+  format: "json"
+  destination: "cloud-logging"
+  retention_days: 30
+  fields:
+    - "timestamp"
+    - "model"
+    - "endpoint"
+    - "latency"
+    - "status"
+    - "error_message"
+
+# Cost Management
+cost_management:
+  budget: 1000  # USD per month
+  alerts:
+    - threshold: 0.8  # 80% of budget
+      severity: "warning"
+    - threshold: 0.95  # 95% of budget
+      severity: "critical"
+
+# Security Settings
+security:
+  authentication:
+    type: "service_account"
+    required: true
+  encryption:
+    at_rest: true
+    in_transit: true
+  audit_logging:
+    enabled: true
+    retention_days: 90
+
+# Performance Optimization
+performance:
+  caching:
+    enabled: true
+    ttl: 3600  # 1 hour
+  batching:
+    enabled: true
+    max_batch_size: 100
+    max_wait_time: 100  # ms
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 1000
+    burst_size: 100 
